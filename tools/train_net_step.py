@@ -425,6 +425,9 @@ def main():
                 training_stats.UpdateIterStats(net_outputs, inner_iter)
                 loss = net_outputs['total_loss']
                 loss.backward()
+                if torch.isnan(loss):
+                    logger.info('NaN loss found! Skipping the current step ...')
+                    break
             optimizer.step()
             training_stats.IterToc()
 
